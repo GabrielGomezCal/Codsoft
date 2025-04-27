@@ -1,5 +1,3 @@
-import math
-
 class Calculator:
     def add(self, a, b):
         return a + b
@@ -20,34 +18,6 @@ class Calculator:
     
     def modulus(self, a, b):
         return a % b
-    
-    def factorial(self, n):
-        if n < 0:
-            raise ValueError("Factorial is not defined for negative numbers")
-        elif n == 0:
-            return 1
-        else:
-            result = 1
-            for i in range(1, n + 1):
-                result *= i
-            return result
-    
-    def square_root(self, n):
-        if n < 0:
-            raise ValueError("Cannot take square root of negative number")
-        return n ** 0.5
-    
-    def logarithm(self, a, base=10):
-        if a <= 0:
-            raise ValueError("Logarithm is not defined for non-positive numbers")
-        if base <= 1:
-            raise ValueError("Base must be greater than 1")
-        return math.log(a, base)
-    
-    def percentage(self, total, part):
-        if total == 0:
-            raise ValueError("Total cannot be zero for percentage calculation")
-        return (part / total) * 100
 
 class Menu:
     def __init__(self):
@@ -58,11 +28,7 @@ class Menu:
             '3': ('Multiply', self.calculator.multiply),
             '4': ('Divide', self.calculator.divide),
             '5': ('Power', self.calculator.power),
-            '6': ('Modulus', self.calculator.modulus),
-            '7': ('Factorial', self.calculator.factorial),
-            '8': ('Square Root', self.calculator.square_root),
-            '9': ('Logarithm', self.calculator.logarithm),
-            '10': ('Percentage', self.calculator.percentage)
+            '6': ('Modulus', self.calculator.modulus)
         }
     
     def show_menu(self):
@@ -71,38 +37,30 @@ class Menu:
             print(f"{key}. {name}")
     
     def get_choice(self):
-        choice = input("Select an operation (1-10): ")
+        choice = input("Select an operation (1-6): ")
         if choice not in self.operations:
             print("Invalid choice. Please try again.")
             return self.get_choice()
         return choice
     
-    def get_numbers(self, op_name):
+    def get_numbers(self):
         try:
-            if op_name in ['Factorial', 'Square Root']:
-                num = float(input(f"Enter the number for {op_name}: "))
-                return (num,)
-            
             a = float(input("Enter the first number: "))
-            if op_name == 'Percentage':
-                total = float(input("Enter the total: "))
-                return (total, a)
-            
             b = float(input("Enter the second number: "))
             return (a, b)
         except ValueError:
             print("Invalid input! Please enter numeric values.")
-            return self.get_numbers(op_name)
+            return self.get_numbers()
     
     def run(self):
         while True:
             self.show_menu()
             choice = self.get_choice()
             operation_name, operation_func = self.operations[choice]
-            args = self.get_numbers(operation_name)
+            a, b = self.get_numbers()
             
             try:
-                result = operation_func(*args)
+                result = operation_func(a, b)
                 print(f"\nResult of {operation_name}: {result}")
             except ValueError as e:
                 print(f"Error: {e}")
