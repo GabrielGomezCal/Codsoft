@@ -15,7 +15,7 @@ def comp_choice():
     choices = ['rock', 'paper', 'scissors']
     return random.choice(choices)
 
-def winner(user, computer):
+def determine_winner(user, computer):
     if user == computer:
         return "tie"
     win = {
@@ -31,15 +31,15 @@ def animate():
         time.sleep(0.3)
     print()
 
-def result(user, computer, winner, scores):
+def result(user, computer, game_winner, scores):
     print(f"\nYou chose: {user.upper()}")
     print(f"Computer chose: {computer.upper()}")
     
     animate()
     
-    if winner == "tie":
+    if game_winner == "tie":
         print("🤝 IT'S A TIE!")
-    elif winner == "user":
+    elif game_winner == "user":
         print(f"🎉 YOU WIN! {user.upper()} beats {computer.upper()}")
     else:
         print(f"💻 COMPUTER WINS! {computer.upper()} beats {user.upper()}")
@@ -87,17 +87,17 @@ while True:
     print("\n                                                               VS\n")
     ascii_game(computer)
     
-    winner = winner(user, computer)
+    game_winner = determine_winner(user, computer)
     
-    if winner == "user":
+    if game_winner == "user":
         scores['user'] += 1
-    elif winner == "computer":
+    elif game_winner == "computer":
         scores['computer'] += 1
     
-    result(user, computer, winner, scores)
+    result(user, computer, game_winner, scores)  
     cnt += 1
     
-    if input("\nPlay again? (yes/no): ").lower() != 'yes':
+    if input("\nPlay again? (y/n): ").lower() != 'y':
         print("\n=== FINAL RESULTS ===")
         print(f"🏆 You: {scores['user']} | Computer: {scores['computer']}")
         if scores['user'] > scores['computer']:
